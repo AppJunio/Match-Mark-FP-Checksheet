@@ -60,16 +60,31 @@
     .img-preview-box {
       position: relative; width: 100%; height: 100%; min-height: 60px; 
       background-color: transparent;
+      display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; padding: 4px;
+      align-items: center; justify-content: center;
+      overflow: hidden;
     }
     
-    /* LAYER 1: Penahan batas dan padding abu-abu */
+    /* ITEM FOTO (DENGAN PADDING & BG ABU-ABU) */
     .lampiran-item {
       position: relative; border: 1px solid #d1d5db; border-radius: 2px; 
-      background: #e5e7eb; width: 100%; height: 100%; 
-      min-height: 0 !important; min-width: 0 !important;
-      padding: 6px; /* Padding dikembalikan */
-      box-sizing: border-box;
+      background: #e5e7eb; width: 100%; height: 100%; padding: 4px; 
+      box-sizing: border-box; min-height: 0 !important; min-width: 0 !important;
     }
+
+    /* ZONA CROP FOTO */
+    .clip-box {
+      width: 100%; height: 100%; overflow: hidden; position: relative;
+      display: flex; justify-content: center; align-items: center;
+      background-color: #fff;
+    }
+    
+    /* GAMBAR ASLI (ANTI-STRETCH) */
+    .clip-box img {
+      max-width: 100%; max-height: 100%; width: auto; height: auto;
+      display: block; transform-origin: center center; cursor: grab;
+    }
+    .clip-box img:active { cursor: grabbing; }
 
     .btn-delete {
       position: absolute; top: 2px; right: 2px; background: #ef4444; color: white;
@@ -91,7 +106,7 @@
     }
     .upload-btn-container label:hover { background: #f3f4f6; }
 
-    /* PENGATURAN CETAK */
+    /* PENGATURAN CETAK PDF (Padding dipertahankan, hanya mematikan tombol) */
     @media print {
       @page { size: A4 landscape; margin: 0 !important; }
       html, body { margin: 0 !important; padding: 0 !important; background: white !important; width: 100% !important; height: 100% !important; }
@@ -100,11 +115,10 @@
       .a4-page { margin: 0 !important; box-shadow: none !important; width: 100% !important; height: 210mm !important; max-height: 210mm !important; padding: 10mm !important; overflow: hidden !important; border: none !important; }
       input:focus, select:focus { background-color: transparent !important; }
       input::placeholder { color: transparent; }
-      .upload-btn-container, .btn-delete { display: none !important; }
       input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; }
     }
     
-    /* Pengaturan Cetak khusus PDF Export via JS */
+    /* Pengaturan PDF via JS */
     .pdf-export-mode-container { width: 1122px !important; margin: 0 auto !important; background: white !important; padding: 0 !important; zoom: 1 !important; }
     .pdf-export-mode-page { width: 1122px !important; height: 793px !important; margin: 0 !important; padding: 30px !important; box-shadow: none !important; box-sizing: border-box !important; }
     .pdf-export-mode-page input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; }
@@ -184,7 +198,6 @@
                 <option value="Fajar Wicaksana"></option>
               </datalist>
 
-              <!-- Tinggi dibebaskan agar tulisan tidak tercoret -->
               <table class="text-center text-[10px] table-fixed w-full border-collapse">
                 <tr class="font-bold bg-gray-50 border-b border-black">
                   <td class="w-1/3 py-1.5">認可<br>Approved</td>
@@ -192,7 +205,6 @@
                   <td class="w-1/3 py-1.5">作成<br>Prepared</td>
                 </tr>
                 <tr class="relative">
-                  <!-- TTD 1 -->
                   <td class="p-0 relative group align-top bg-white h-[45px]">
                     <div class="flex flex-col items-center justify-center h-full w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'app')">
                       <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
@@ -201,8 +213,6 @@
                     <input type="text" id="name_app" list="nama-approval" value="Agus Sarjono" class="font-bold w-full absolute bottom-0 left-0 z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
                     <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
                   </td>
-                  
-                  <!-- TTD 2 -->
                   <td class="p-0 relative group align-top bg-white h-[45px]">
                     <div class="flex flex-col items-center justify-center h-full w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'chk')">
                       <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
@@ -211,8 +221,6 @@
                     <input type="text" id="name_chk" list="nama-approval" value="Neldy R. Ronaldy" class="font-bold w-full absolute bottom-0 left-0 z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
                     <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
                   </td>
-                  
-                  <!-- TTD 3 -->
                   <td class="p-0 relative group align-top bg-white h-[45px]">
                     <div class="flex flex-col items-center justify-center h-full w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'prep')">
                       <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
@@ -274,29 +282,23 @@
           <!-- Row 5: All FP core/pin -->
           <tr class="bg-white">
             <td class="p-2 border border-black">All FP<br>core/pin</td>
-            <td class="p-1 h-[130px] border border-black">
-              <div class="flex flex-col h-full w-full relative">
-                <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
-                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-1')"></label>
-                </div>
-                <div id="fp-1" class="img-preview-box w-full h-full pt-[24px]"></div>
+            <td class="p-1 h-[130px] border border-black relative">
+              <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
+                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-1')"></label>
               </div>
+              <div id="fp-1" class="img-preview-box w-full h-full pt-[24px]"></div>
             </td>
-            <td class="p-1 h-[130px] border border-black">
-              <div class="flex flex-col h-full w-full relative">
-                <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
-                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-2')"></label>
-                </div>
-                <div id="fp-2" class="img-preview-box w-full h-full pt-[24px]"></div>
+            <td class="p-1 h-[130px] border border-black relative">
+              <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
+                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-2')"></label>
               </div>
+              <div id="fp-2" class="img-preview-box w-full h-full pt-[24px]"></div>
             </td>
-            <td class="p-1 h-[130px] border border-black">
-              <div class="flex flex-col h-full w-full relative">
-                <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
-                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-3')"></label>
-                </div>
-                <div id="fp-3" class="img-preview-box w-full h-full pt-[24px]"></div>
+            <td class="p-1 h-[130px] border border-black relative">
+              <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
+                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-3')"></label>
               </div>
+              <div id="fp-3" class="img-preview-box w-full h-full pt-[24px]"></div>
             </td>
           </tr>
 
@@ -311,29 +313,23 @@
           <!-- Row 7: All Match mark core/pin -->
           <tr class="bg-white">
             <td class="p-2 border border-black">All<br>Match mark<br>core/pin</td>
-            <td class="p-1 h-[130px] border border-black">
-              <div class="flex flex-col h-full w-full relative">
-                <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
-                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-1')"></label>
-                </div>
-                <div id="mm-1" class="img-preview-box w-full h-full pt-[24px]"></div>
+            <td class="p-1 h-[130px] border border-black relative">
+              <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
+                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-1')"></label>
               </div>
+              <div id="mm-1" class="img-preview-box w-full h-full pt-[24px]"></div>
             </td>
-            <td class="p-1 h-[130px] border border-black">
-              <div class="flex flex-col h-full w-full relative">
-                <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
-                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-2')"></label>
-                </div>
-                <div id="mm-2" class="img-preview-box w-full h-full pt-[24px]"></div>
+            <td class="p-1 h-[130px] border border-black relative">
+              <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
+                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-2')"></label>
               </div>
+              <div id="mm-2" class="img-preview-box w-full h-full pt-[24px]"></div>
             </td>
-            <td class="p-1 h-[130px] border border-black">
-              <div class="flex flex-col h-full w-full relative">
-                <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
-                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-3')"></label>
-                </div>
-                <div id="mm-3" class="img-preview-box w-full h-full pt-[24px]"></div>
+            <td class="p-1 h-[130px] border border-black relative">
+              <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
+                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-3')"></label>
               </div>
+              <div id="mm-3" class="img-preview-box w-full h-full pt-[24px]"></div>
             </td>
           </tr>
 
@@ -359,29 +355,23 @@
                 </svg>
               </div>
             </td>
-            <td class="p-1 h-[130px] border border-black">
-              <div class="flex flex-col h-full w-full relative">
-                <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
-                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-1')"></label>
-                </div>
-                <div id="icon-1" class="img-preview-box w-full h-full pt-[24px]"></div>
+            <td class="p-1 h-[130px] border border-black relative">
+              <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
+                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-1')"></label>
               </div>
+              <div id="icon-1" class="img-preview-box w-full h-full pt-[24px]"></div>
             </td>
-            <td class="p-1 h-[130px] border border-black">
-              <div class="flex flex-col h-full w-full relative">
-                <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
-                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-2')"></label>
-                </div>
-                <div id="icon-2" class="img-preview-box w-full h-full pt-[24px]"></div>
+            <td class="p-1 h-[130px] border border-black relative">
+              <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
+                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-2')"></label>
               </div>
+              <div id="icon-2" class="img-preview-box w-full h-full pt-[24px]"></div>
             </td>
-            <td class="p-1 h-[130px] border border-black">
-              <div class="flex flex-col h-full w-full relative">
-                <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
-                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-3')"></label>
-                </div>
-                <div id="icon-3" class="img-preview-box w-full h-full pt-[24px]"></div>
+            <td class="p-1 h-[130px] border border-black relative">
+              <div class="upload-btn-container no-print shrink-0 absolute top-1 left-0 right-0 z-20">
+                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-3')"></label>
               </div>
+              <div id="icon-3" class="img-preview-box w-full h-full pt-[24px]"></div>
             </td>
           </tr>
 
@@ -443,7 +433,7 @@
     setTimeout(applyMobileScale, 100); 
 
     // -----------------------------------------
-    // PDF GENERATION (DENGAN SCROLLY FIX)
+    // PDF GENERATION 
     // -----------------------------------------
     async function downloadLaporanPDF() {
       const loadingOverlay = document.getElementById('loadingOverlay');
@@ -494,16 +484,15 @@
     }
 
     // -----------------------------------------
-    // PAN/ZOOM & ROTASI GESTURE
+    // PAN/ZOOM GESTURE (MENGGUNAKAN ELEMEN PEMBUNGKUS)
     // -----------------------------------------
-    function applyInteractivePanZoom(wrapperElement, rotBtn) {
+    function applyInteractivePanZoom(imgElement, rotBtn, touchTarget) {
       let scale = 1; let tx = 0, ty = 0; let startX, startY;
       let isDragging = false; let initialPinchDist = null;
       let angle = 0;
 
       function updateTransform() { 
-          // Translate normal agar html2canvas bisa merender dengan presisi
-          wrapperElement.style.transform = `translate(${tx}px, ${ty}px) scale(${scale}) rotate(${angle}deg)`; 
+          imgElement.style.transform = `translate(${tx}px, ${ty}px) scale(${scale}) rotate(${angle}deg)`; 
       }
 
       if(rotBtn) {
@@ -515,14 +504,14 @@
           };
       }
 
-      wrapperElement.addEventListener('wheel', (e) => {
+      touchTarget.addEventListener('wheel', (e) => {
         e.preventDefault(); 
         const delta = e.deltaY * -0.003;
         scale = Math.min(Math.max(1, scale + delta), 8);
         updateTransform();
       }, { passive: false });
 
-      wrapperElement.addEventListener('mousedown', (e) => {
+      touchTarget.addEventListener('mousedown', (e) => {
         e.preventDefault(); isDragging = true;
         startX = e.clientX - tx; startY = e.clientY - ty;
       });
@@ -532,7 +521,7 @@
       });
       window.addEventListener('mouseup', () => { isDragging = false; });
 
-      wrapperElement.addEventListener('touchstart', (e) => {
+      touchTarget.addEventListener('touchstart', (e) => {
         e.preventDefault(); 
         if (e.touches.length === 2) {
           initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
@@ -541,7 +530,7 @@
         }
       }, { passive: false });
 
-      wrapperElement.addEventListener('touchmove', (e) => {
+      touchTarget.addEventListener('touchmove', (e) => {
         e.preventDefault(); 
         if (e.touches.length === 2 && initialPinchDist) {
           const currentDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
@@ -553,14 +542,14 @@
         }
       }, { passive: false });
 
-      wrapperElement.addEventListener('touchend', (e) => {
+      touchTarget.addEventListener('touchend', (e) => {
         if (e.touches.length < 2) initialPinchDist = null;
         if (e.touches.length === 0) isDragging = false;
       });
     }
 
     // -----------------------------------------
-    // IMAGE UPLOAD & MULTI-GRID LAYOUT (SISTEM LAPIS 3 HTML2CANVAS FIX)
+    // IMAGE UPLOAD (STRUKTUR ANTI-STRETCH & ZONA CROP PDF)
     // -----------------------------------------
     function handleMultipleImagesForBox(event, targetId) {
       const files = event.target.files;
@@ -570,42 +559,23 @@
       Array.from(files).forEach(file => {
         const reader = new FileReader();
         reader.onload = function(e) {
-          // Lapis 1: Wrapper paling luar (background abu, padding border)
+          // Lapis 1: Wrapper utama (memegang padding)
           const wrapper = document.createElement('div');
           wrapper.className = 'lampiran-item';
           
-          // Lapis 2: Zona kliping agar gambar yang di-zoom tidak meluap menutupi padding
+          // Lapis 2: Zona pemotongan gambar (Crop zone agar gambar tidak tumpah saat di zoom)
           const clipBox = document.createElement('div');
-          clipBox.style.width = '100%';
-          clipBox.style.height = '100%';
-          clipBox.style.overflow = 'hidden';
-          clipBox.style.position = 'relative';
-          clipBox.style.backgroundColor = '#fff'; // BG Putih tempat gambar
+          clipBox.className = 'clip-box';
           
-          // Lapis 3: Zona pembawa Transform (Skala & Geser)
-          const transformWrapper = document.createElement('div');
-          transformWrapper.style.width = '100%';
-          transformWrapper.style.height = '100%';
-          transformWrapper.style.display = 'flex';
-          transformWrapper.style.justifyContent = 'center';
-          transformWrapper.style.alignItems = 'center';
-          transformWrapper.style.transformOrigin = 'center center';
-          
-          // Objek Gambar Asli (object-fit: contain murni)
+          // Lapis 3: Gambar Asli (Akan dikenakan transformasi Skala/Geser)
           const img = document.createElement('img');
           img.src = e.target.result;
-          img.style.maxWidth = '100%';
-          img.style.maxHeight = '100%';
-          img.style.objectFit = 'contain';
-          img.style.pointerEvents = 'none'; // Biarkan wrapper yang menangkap sentuhan
-
-          // Tombol Rotate
+          
           const rotBtn = document.createElement('button');
           rotBtn.innerHTML = '↻';
           rotBtn.title = 'Putar Foto';
           rotBtn.className = 'absolute top-1 left-1 bg-blue-500 hover:bg-blue-700 text-white rounded w-5 h-5 flex items-center justify-center text-[12px] font-bold no-print cursor-pointer shadow-md z-10';
           
-          // Tombol Delete
           const delBtn = document.createElement('button');
           delBtn.innerHTML = '×';
           delBtn.className = 'absolute top-1 right-1 bg-red-500 hover:bg-red-700 text-white rounded w-5 h-5 flex items-center justify-center text-[10px] font-bold no-print cursor-pointer shadow-md z-10';
@@ -613,15 +583,14 @@
             ev.stopPropagation(); wrapper.remove(); updateGridLayout(targetBox); 
           };
           
-          transformWrapper.appendChild(img);
-          clipBox.appendChild(transformWrapper);
+          clipBox.appendChild(img);
           wrapper.appendChild(clipBox);
           wrapper.appendChild(delBtn);
           wrapper.appendChild(rotBtn);
           targetBox.appendChild(wrapper);
           
-          // Terapkan Zoom & Pan HANYA pada transformWrapper (Lapis 3)
-          applyInteractivePanZoom(transformWrapper, rotBtn);
+          // Terapkan deteksi mouse/sentuhan pada clipBox, tapi gerakkan img
+          applyInteractivePanZoom(img, rotBtn, clipBox);
           updateGridLayout(targetBox); 
         }
         reader.readAsDataURL(file);
@@ -637,7 +606,7 @@
       }
       
       gallery.style.display = 'grid';
-      gallery.style.gap = '4px';
+      gallery.style.gap = '6px';
       
       if (count === 1) {
         gallery.style.gridTemplateColumns = '1fr'; gallery.style.gridTemplateRows = '1fr';
