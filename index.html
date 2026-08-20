@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>Match Mark FP Checksheet</title>
+  <title>Match Mark Checksheet</title>
   
   <!-- TAILWIND CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -60,21 +60,22 @@
     .img-preview-box {
       position: relative; width: 100%; height: 100%; min-height: 60px; 
       background-color: transparent;
-      display: flex; flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 2px;
+      display: flex; flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 4px; /* Padding dikembalikan */
       align-items: center; justify-content: center;
       overflow: hidden;
     }
     
+    /* PERBAIKAN BUG STRETCH HTML2CANVAS */
     .lampiran-item {
       position: relative; border: 1px solid #d1d5db; border-radius: 2px; overflow: hidden; 
-      background: #e5e7eb; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; 
+      background: #e5e7eb; width: 100%; height: 100%; 
+      display: flex; justify-content: center; align-items: center; /* Flexbox Centering */
       min-height: 0 !important; min-width: 0 !important;
     }
     
     .lampiran-item img {
-      position: absolute !important; top: 0; left: 0; width: 100%; height: 100%; 
+      max-width: 100%; max-height: 100%; /* Mencegah melar */
       object-fit: contain; cursor: grab; transform-origin: center center;
-      -webkit-transform: translate3d(0,0,0);
     }
     .lampiran-item img:active { cursor: grabbing; }
 
@@ -98,7 +99,7 @@
     }
     .upload-btn-container label:hover { background: #f3f4f6; }
 
-    /* PENGATURAN CETAK (MENGHILANGKAN GAP FOTO DAN ICON KALENDER) */
+    /* PENGATURAN CETAK */
     @media print {
       @page { size: A4 landscape; margin: 0 !important; }
       html, body { margin: 0 !important; padding: 0 !important; background: white !important; width: 100% !important; height: 100% !important; }
@@ -108,17 +109,12 @@
       input:focus, select:focus { background-color: transparent !important; }
       input::placeholder { color: transparent; }
       .upload-btn-container, .btn-delete { display: none !important; }
-      
-      .img-preview-box { gap: 0 !important; padding: 0 !important; }
-      .lampiran-item { border: none !important; border-radius: 0 !important; }
       input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; }
     }
     
     /* Pengaturan Cetak khusus PDF Export via JS */
     .pdf-export-mode-container { width: 1122px !important; margin: 0 auto !important; background: white !important; padding: 0 !important; zoom: 1 !important; }
     .pdf-export-mode-page { width: 1122px !important; height: 793px !important; margin: 0 !important; padding: 30px !important; box-shadow: none !important; box-sizing: border-box !important; }
-    .pdf-export-mode-page .img-preview-box { gap: 0 !important; padding: 0 !important; }
-    .pdf-export-mode-page .lampiran-item { border: none !important; border-radius: 0 !important; }
     .pdf-export-mode-page input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; }
     
     #loadingOverlay {
@@ -154,7 +150,7 @@
     <div class="a4-page page-container" id="page-1">
       <div class="form-border bg-white flex flex-col">
         
-        <!-- HEADER KOP (DIUBAH MENJADI SISTEM FLEXBOX MUTLAK) -->
+        <!-- HEADER KOP -->
         <div class="flex w-full justify-between items-end mb-2">
           
           <!-- Kiri: Judul dan Logo FP / Peringatan -->
@@ -172,10 +168,10 @@
             </svg>
           </div>
 
-          <!-- Kanan: Container 2 Tabel (Menggunakan ukuran Fixed agar tidak hancur/tabrakan) -->
+          <!-- Kanan: Container 2 Tabel -->
           <div class="flex items-end gap-3 shrink-0">
             
-            <!-- Tabel Perusahaan (Tinggi presisi 80px) -->
+            <!-- Tabel Perusahaan -->
             <div class="w-[240px]">
               <table class="text-center font-bold text-[10px] w-full h-[80px]">
                 <tr class="h-[40px]">
@@ -189,7 +185,7 @@
               </table>
             </div>
 
-            <!-- Tabel Approval (Tinggi presisi 80px) -->
+            <!-- Tabel Approval -->
             <div class="w-[360px]">
               <datalist id="nama-approval">
                 <option value="Agus Sarjono"></option>
@@ -253,7 +249,6 @@
         </div>
 
         <!-- MAIN TABLE -->
-        <!-- Menambahkan overflow-hidden di td dan flex-col agar konten tidak pernah menembus td -->
         <table class="w-full text-center text-xs font-bold table-fixed flex-grow border-collapse">
           <!-- Row 1: Part No -->
           <tr class="bg-white">
