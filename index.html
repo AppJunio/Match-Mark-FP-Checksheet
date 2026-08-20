@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>Match Mark FP Checksheet</title>
+  <title>Match Mark Checksheet</title>
   
   <!-- TAILWIND CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -31,7 +31,6 @@
     #pdf-content-wrapper {
       width: 100%; display: flex; flex-direction: column; align-items: center;
       -webkit-transform: translateZ(0); 
-      transform: translateZ(0);
     }
 
     /* Kertas A4 Landscape Mode */
@@ -59,7 +58,7 @@
 
     /* Pengaturan Box Foto Spesifik Tabel */
     .img-preview-box {
-      position: relative; width: 100%; height: 100%; 
+      position: relative; width: 100%; height: 100%; min-height: 60px; 
       background-color: transparent;
       display: flex; flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 2px;
       align-items: center; justify-content: center;
@@ -74,8 +73,7 @@
     
     .lampiran-item img {
       position: absolute !important; top: 0; left: 0; width: 100%; height: 100%; 
-      object-fit: contain; cursor: grab; transform-origin: center center;
-      transform: translate3d(0,0,0);
+      object-fit: cover; cursor: grab; transform-origin: center center;
       -webkit-transform: translate3d(0,0,0);
     }
     .lampiran-item img:active { cursor: grabbing; }
@@ -100,6 +98,7 @@
     }
     .upload-btn-container label:hover { background: #f3f4f6; }
 
+    /* PENGATURAN CETAK (MENGHILANGKAN GAP FOTO DAN ICON KALENDER) */
     @media print {
       @page { size: A4 landscape; margin: 0 !important; }
       html, body { margin: 0 !important; padding: 0 !important; background: white !important; width: 100% !important; height: 100% !important; }
@@ -109,7 +108,20 @@
       input:focus, select:focus { background-color: transparent !important; }
       input::placeholder { color: transparent; }
       .upload-btn-container, .btn-delete { display: none !important; }
+      
+      /* Hapus gap agar foto rapat seperti referensi */
+      .img-preview-box { gap: 0 !important; padding: 0 !important; }
+      .lampiran-item { border: none !important; border-radius: 0 !important; }
+      /* Sembunyikan icon kalender pada PDF */
+      input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; }
     }
+    
+    /* Pengaturan Cetak khusus PDF Export via JS */
+    .pdf-export-mode-container { width: 1122px !important; margin: 0 auto !important; background: white !important; padding: 0 !important; zoom: 1 !important; }
+    .pdf-export-mode-page { width: 1122px !important; height: 793px !important; margin: 0 !important; padding: 30px !important; box-shadow: none !important; box-sizing: border-box !important; }
+    .pdf-export-mode-page .img-preview-box { gap: 0 !important; padding: 0 !important; }
+    .pdf-export-mode-page .lampiran-item { border: none !important; border-radius: 0 !important; }
+    .pdf-export-mode-page input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; }
     
     #loadingOverlay {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -117,14 +129,6 @@
     }
     .spinner { border: 8px solid #f3f3f3; border-top: 8px solid #2563eb; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    .pdf-export-mode-container { width: 1122px !important; margin: 0 auto !important; background: white !important; padding: 0 !important; zoom: 1 !important; }
-    .pdf-export-mode-page { width: 1122px !important; height: 793px !important; margin: 0 !important; padding: 30px !important; box-shadow: none !important; box-sizing: border-box !important; }
-    
-    /* TTD area */
-    .sign-area { height: 40px; display: flex; justify-content: center; align-items: center; color: #a0a0a0; font-size: 10px; cursor: pointer; transition: 0.2s; position: relative; }
-    .sign-area:hover { background-color: #ffffe0; color: #333; }
-    .sign-area img { max-height: 40px; max-width: 100%; object-fit: contain; }
   </style>
 </head>
 
@@ -152,12 +156,12 @@
     <div class="a4-page page-container" id="page-1">
       <div class="form-border bg-white flex flex-col">
         
-        <!-- HEADER KOP -->
-        <div class="flex justify-between items-end mb-2">
+        <!-- HEADER KOP (DIUBAH MENJADI ABSOLUTE AGAR PRESISI DENGAN REFERENSI PDF) -->
+        <div class="relative w-full mb-3 h-[75px]">
           
-          <!-- Kiri: Judul dan Logo FP / Peringatan -->
-          <div class="flex items-center gap-3">
-            <span class="font-bold text-lg underline underline-offset-4 tracking-wide">Match mark on</span>
+          <!-- Kiri: Judul dan Logo FP / Peringatan (Rata Bawah) -->
+          <div class="absolute bottom-1 left-0 flex items-center gap-3">
+            <span class="font-bold text-xl underline underline-offset-4 tracking-wide">Match mark on</span>
             <!-- Logo FP -->
             <svg width="45" height="35" viewBox="0 0 40 30" class="ml-2">
               <polygon points="8,2 32,2 38,15 32,28 8,28 2,15" stroke="black" stroke-width="2" fill="none"/>
@@ -170,9 +174,9 @@
             </svg>
           </div>
 
-          <!-- Tengah: Tabel Perusahaan -->
-          <div class="w-[30%]">
-            <table class="text-center font-bold text-[10px]">
+          <!-- Tengah: Tabel Perusahaan (Ditengah mutlak, rata atas) -->
+          <div class="absolute top-0 flex justify-center" style="left: 50%; transform: translateX(-50%); width: 32%;">
+            <table class="text-center font-bold text-[10px] w-full">
               <tr>
                 <td class="w-1/2 p-1">会社名<br>Company Name</td>
                 <td class="w-1/2 p-1"><input type="text" value="PT. SSI" class="font-bold text-sm"></td>
@@ -184,61 +188,61 @@
             </table>
           </div>
 
-          <!-- Kanan: Tabel Approval -->
-          <div class="w-[35%]">
+          <!-- Kanan: Tabel Approval (Kanan mutlak, rata atas) -->
+          <div class="absolute top-0 right-0 w-[38%]">
             <!-- Data List Combo Box untuk Nama -->
             <datalist id="nama-approval">
               <option value="Agus Sarjono"></option>
+              <option value="Neldy R. Ronaldy"></option>
+              <option value="Arya Pratama"></option>
               <option value="Fajar Wicaksana"></option>
-              <option value="Neldy R.Ronaldy"></option>
-              <option value="Manager Produksi"></option>
             </datalist>
 
             <table class="text-center text-[10px] table-fixed w-full">
               <tr class="font-bold bg-gray-50">
-                <td class="w-1/3">認可<br>Approved</td>
-                <td class="w-1/3">点検<br>Checked</td>
-                <td class="w-1/3">作成<br>Prepared</td>
+                <td class="w-1/3 p-1">認可<br>Approved</td>
+                <td class="w-1/3 p-1">点検<br>Checked</td>
+                <td class="w-1/3 p-1">作成<br>Prepared</td>
               </tr>
-              <tr class="h-[50px] relative">
-                <!-- TTD 1 -->
-                <td class="p-0 relative group align-top">
-                  <div class="flex flex-col items-center justify-center h-[32px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'app')">
+              <tr class="h-[55px] relative">
+                <!-- TTD 1 (Tanpa Border Atas Pada Nama agar menyatu dgn TTD) -->
+                <td class="p-0 relative group align-top bg-white">
+                  <div class="flex flex-col items-center justify-center h-[35px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'app')">
                     <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
-                    <img src="" class="hidden max-h-[32px] max-w-full object-contain signature-img" style="position:absolute; top:0; z-index:1;">
+                    <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img" style="position:absolute; top:2px; z-index:1;">
                   </div>
-                  <input type="text" id="name_app" list="nama-approval" value="Agus Sarjono" class="font-bold border-t border-black w-full relative z-10 bg-white text-[10px] text-center" onclick="event.stopPropagation()">
+                  <input type="text" id="name_app" list="nama-approval" value="Agus Sarjono" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center mb-1" onclick="event.stopPropagation()">
                   <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
                 </td>
                 
                 <!-- TTD 2 -->
-                <td class="p-0 relative group align-top">
-                  <div class="flex flex-col items-center justify-center h-[32px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'chk')">
+                <td class="p-0 relative group align-top bg-white">
+                  <div class="flex flex-col items-center justify-center h-[35px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'chk')">
                     <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
-                    <img src="" class="hidden max-h-[32px] max-w-full object-contain signature-img" style="position:absolute; top:0; z-index:1;">
+                    <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img" style="position:absolute; top:2px; z-index:1;">
                   </div>
-                  <input type="text" id="name_chk" list="nama-approval" value="Fajar Wicaksana" class="font-bold border-t border-black w-full relative z-10 bg-white text-[10px] text-center" onclick="event.stopPropagation()">
+                  <input type="text" id="name_chk" list="nama-approval" value="Neldy R. Ronaldy" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center mb-1" onclick="event.stopPropagation()">
                   <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
                 </td>
                 
                 <!-- TTD 3 -->
-                <td class="p-0 relative group align-top">
-                  <div class="flex flex-col items-center justify-center h-[32px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'prep')">
+                <td class="p-0 relative group align-top bg-white">
+                  <div class="flex flex-col items-center justify-center h-[35px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'prep')">
                     <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
-                    <img src="" class="hidden max-h-[32px] max-w-full object-contain signature-img" style="position:absolute; top:0; z-index:1;">
+                    <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img" style="position:absolute; top:2px; z-index:1;">
                   </div>
-                  <input type="text" id="name_prep" list="nama-approval" value="Neldy R.Ronaldy" class="font-bold border-t border-black w-full relative z-10 bg-white text-[10px] text-center" onclick="event.stopPropagation()">
+                  <input type="text" id="name_prep" list="nama-approval" value="Arya Pratama" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center mb-1" onclick="event.stopPropagation()">
                   <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
                 </td>
               </tr>
               <tr>
-                <td class="p-0 bg-white border-t-0">
+                <td class="p-0 bg-white">
                   <div class="flex items-center text-[9px] px-1 gap-1">Date <input type="date" class="flex-grow cursor-pointer auto-date-field" onclick="event.stopPropagation()"></div>
                 </td>
-                <td class="p-0 bg-white border-t-0">
+                <td class="p-0 bg-white">
                   <div class="flex items-center text-[9px] px-1 gap-1">Date <input type="date" class="flex-grow cursor-pointer auto-date-field" onclick="event.stopPropagation()"></div>
                 </td>
-                <td class="p-0 bg-white border-t-0">
+                <td class="p-0 bg-white">
                   <div class="flex items-center text-[9px] px-1 gap-1">Date <input type="date" class="flex-grow cursor-pointer auto-date-field" onclick="event.stopPropagation()"></div>
                 </td>
               </tr>
@@ -252,23 +256,23 @@
           <!-- Row 1: Part No -->
           <tr class="bg-white">
             <td class="w-[12%] p-1">Part No.</td>
-            <td class="w-[29.3%] p-1"><input type="text" value="75J081-0050" class="font-bold text-sm"></td>
-            <td class="w-[29.3%] p-1"><input type="text" value="75J081-0080" class="font-bold text-sm"></td>
-            <td class="w-[29.3%] p-1"><input type="text" value="75J081-0070" class="font-bold text-sm"></td>
+            <td class="w-[29.3%] p-1"><input type="text" value="75V030-0020" class="font-bold text-sm"></td>
+            <td class="w-[29.3%] p-1"><input type="text" value="75V030-0150" class="font-bold text-sm"></td>
+            <td class="w-[29.3%] p-1"><input type="text" value="75V030-0030" class="font-bold text-sm"></td>
           </tr>
           <!-- Row 2: Part Name -->
           <tr class="bg-white">
             <td class="p-1">Part Name</td>
-            <td class="p-1"><input type="text" value="Knob Seek" class="font-normal text-sm"></td>
-            <td class="p-1"><input type="text" value="Knob OFF HOOK" class="font-normal text-sm"></td>
-            <td class="p-1"><input type="text" value="Knob VOICE" class="font-normal text-sm"></td>
+            <td class="p-1"><input type="text" value="Knob Back" class="font-normal text-sm"></td>
+            <td class="p-1"><input type="text" value="Knob LKA" class="font-normal text-sm"></td>
+            <td class="p-1"><input type="text" value="Knob View" class="font-normal text-sm"></td>
           </tr>
           <!-- Row 3: Model Name -->
           <tr class="bg-white">
             <td class="p-1">Model Name</td>
-            <td class="p-1"><input type="text" value="660 A" class="font-normal text-sm"></td>
-            <td class="p-1"><input type="text" value="660 A" class="font-normal text-sm"></td>
-            <td class="p-1"><input type="text" value="660 A" class="font-normal text-sm"></td>
+            <td class="p-1"><input type="text" value="D01D" class="font-normal text-sm"></td>
+            <td class="p-1"><input type="text" value="D01D" class="font-normal text-sm"></td>
+            <td class="p-1"><input type="text" value="D01D" class="font-normal text-sm"></td>
           </tr>
           
           <!-- Row 4: Judge -->
@@ -279,7 +283,7 @@
             <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
           </tr>
 
-          <!-- Row 5: All FP core/pin (Menggunakan Flex-Col & Overflow Hidden agar presisi) -->
+          <!-- Row 5: All FP core/pin -->
           <tr class="bg-white">
             <td class="p-2">All FP<br>core/pin</td>
             <td class="p-1 h-[130px] overflow-hidden">
@@ -407,7 +411,7 @@
         <span>Coretan Tanda Tangan</span><button type="button" class="text-red-500 text-[10px] hover:underline" onclick="clearCanvas()">Hapus Coretan</button>
       </label>
       <div class="border-2 border-dashed border-gray-400 rounded bg-gray-50 mb-3 cursor-crosshair">
-        <canvas id="signatureCanvas" width="380" height="140" class="w-full block bg-white" style="touch-action: none; -webkit-user-select: none; user-select: none;"></canvas>
+        <canvas id="signatureCanvas" width="380" height="140" class="w-full block bg-white" style="touch-action: none; -webkit-user-select: none;"></canvas>
       </div>
       <div class="flex justify-end gap-2 pt-2 border-t border-gray-200">
         <button type="button" class="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 rounded text-xs font-bold" onclick="closeSignatureModal()">Batal</button>
