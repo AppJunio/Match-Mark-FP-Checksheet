@@ -33,7 +33,7 @@
       height: 793px; 
       background: white;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-      padding: 25px 35px; /* Margin dikurangi agar konten lebih leluasa dan tidak terpotong */
+      padding: 25px 35px;
       display: flex; 
       flex-direction: column; 
       position: relative;
@@ -51,7 +51,7 @@
 
     /* STRUKTUR KOTAK FOTO ANTI-TUMPAH (DENGAN PADDING) */
     .photo-cell {
-      height: 120px; /* Tinggi disesuaikan agar 3 baris foto masuk sempurna 100% di A4 */
+      height: 120px;
       padding: 4px !important; 
       position: relative;
     }
@@ -66,14 +66,14 @@
     .photo-wrapper {
       width: 100%; height: 100%; 
       position: absolute; top: 0; left: 0;
-      overflow: hidden; /* Potong gambar HANYA di dalam padding ini */
+      overflow: hidden; 
       background-color: #e5e7eb;
       border-radius: 4px;
-      display: none; /* Sembunyikan sampai ada gambar */
+      display: none; 
     }
     .photo-wrapper img {
       width: 100%; height: 100%;
-      object-fit: contain; /* Gambar asli tidak melar */
+      object-fit: contain; 
       transform-origin: center center;
       cursor: grab;
     }
@@ -113,7 +113,6 @@
       .photo-container { border: 1px solid #d1d5db !important; } 
     }
     
-    /* Pengaturan Cetak khusus PDF Export via JS */
     .pdf-export-mode-page { box-shadow: none !important; margin: 0 !important; }
     .pdf-export-mode-page input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; }
     .pdf-export-mode-page .photo-container { border: 1px solid #d1d5db !important; }
@@ -199,38 +198,46 @@
                 <td class="w-1/3 py-1.5">作成<br>Prepared</td>
               </tr>
               <tr class="relative">
-                <!-- TTD 1 (Diperbaiki dengan Flexbox agar tidak tembus) -->
-                <td class="p-0 relative group bg-white h-[50px]">
-                  <div class="flex flex-col items-center justify-between h-full w-full cursor-pointer hover:bg-yellow-50 pb-0.5" onclick="openSignatureModal(this.parentElement, 'app')">
-                    <div class="flex-grow flex items-center justify-center w-full overflow-hidden">
+                <!-- TTD 1 (Diperbaiki: Tinggi dipisah kaku 30px untuk gambar dan 20px untuk nama) -->
+                <td class="p-0 relative group bg-white h-[50px] align-top">
+                  <div class="flex flex-col items-center justify-between h-[50px] w-full cursor-pointer hover:bg-yellow-50 overflow-hidden" onclick="openSignatureModal(this.parentElement, 'app')">
+                    <!-- Pembungkus Gambar (Terkunci 30px) -->
+                    <div class="h-[30px] w-full flex items-center justify-center overflow-hidden">
                       <span class="text-gray-400 text-[10px] no-print prompt-text">Klik TTD</span>
-                      <img src="" class="hidden max-h-[30px] max-w-[95%] object-contain signature-img z-[1]">
+                      <img src="" class="hidden max-h-[28px] max-w-[95%] object-contain signature-img">
                     </div>
-                    <input type="text" id="name_app" list="nama-approval" value="Agus Sarjono" class="font-bold w-full z-10 bg-transparent text-[11px] text-center shrink-0" onclick="event.stopPropagation()">
+                    <!-- Pembungkus Nama (Terkunci 20px) -->
+                    <div class="h-[20px] w-full flex items-end pb-0.5">
+                      <input type="text" id="name_app" list="nama-approval" value="Agus Sarjono" class="font-bold w-full bg-transparent text-[11px] text-center" onclick="event.stopPropagation()">
+                    </div>
                   </div>
                   <button type="button" class="hidden group-hover:flex no-print btn-control btn-delete absolute top-1 right-1" onclick="clearSignature(event, this.parentElement)">×</button>
                 </td>
                 
-                <!-- TTD 2 (Diperbaiki dengan Flexbox agar tidak tembus) -->
-                <td class="p-0 relative group bg-white h-[50px]">
-                  <div class="flex flex-col items-center justify-between h-full w-full cursor-pointer hover:bg-yellow-50 pb-0.5" onclick="openSignatureModal(this.parentElement, 'chk')">
-                    <div class="flex-grow flex items-center justify-center w-full overflow-hidden">
+                <!-- TTD 2 -->
+                <td class="p-0 relative group bg-white h-[50px] align-top">
+                  <div class="flex flex-col items-center justify-between h-[50px] w-full cursor-pointer hover:bg-yellow-50 overflow-hidden" onclick="openSignatureModal(this.parentElement, 'chk')">
+                    <div class="h-[30px] w-full flex items-center justify-center overflow-hidden">
                       <span class="text-gray-400 text-[10px] no-print prompt-text">Klik TTD</span>
-                      <img src="" class="hidden max-h-[30px] max-w-[95%] object-contain signature-img z-[1]">
+                      <img src="" class="hidden max-h-[28px] max-w-[95%] object-contain signature-img">
                     </div>
-                    <input type="text" id="name_chk" list="nama-approval" value="Neldy R. Ronaldy" class="font-bold w-full z-10 bg-transparent text-[11px] text-center shrink-0" onclick="event.stopPropagation()">
+                    <div class="h-[20px] w-full flex items-end pb-0.5">
+                      <input type="text" id="name_chk" list="nama-approval" value="Neldy R. Ronaldy" class="font-bold w-full bg-transparent text-[11px] text-center" onclick="event.stopPropagation()">
+                    </div>
                   </div>
                   <button type="button" class="hidden group-hover:flex no-print btn-control btn-delete absolute top-1 right-1" onclick="clearSignature(event, this.parentElement)">×</button>
                 </td>
                 
-                <!-- TTD 3 (Diperbaiki dengan Flexbox agar tidak tembus) -->
-                <td class="p-0 relative group bg-white h-[50px]">
-                  <div class="flex flex-col items-center justify-between h-full w-full cursor-pointer hover:bg-yellow-50 pb-0.5" onclick="openSignatureModal(this.parentElement, 'prep')">
-                    <div class="flex-grow flex items-center justify-center w-full overflow-hidden">
+                <!-- TTD 3 -->
+                <td class="p-0 relative group bg-white h-[50px] align-top">
+                  <div class="flex flex-col items-center justify-between h-[50px] w-full cursor-pointer hover:bg-yellow-50 overflow-hidden" onclick="openSignatureModal(this.parentElement, 'prep')">
+                    <div class="h-[30px] w-full flex items-center justify-center overflow-hidden">
                       <span class="text-gray-400 text-[10px] no-print prompt-text">Klik TTD</span>
-                      <img src="" class="hidden max-h-[30px] max-w-[95%] object-contain signature-img z-[1]">
+                      <img src="" class="hidden max-h-[28px] max-w-[95%] object-contain signature-img">
                     </div>
-                    <input type="text" id="name_prep" list="nama-approval" value="Arya Pratama" class="font-bold w-full z-10 bg-transparent text-[11px] text-center shrink-0" onclick="event.stopPropagation()">
+                    <div class="h-[20px] w-full flex items-end pb-0.5">
+                      <input type="text" id="name_prep" list="nama-approval" value="Arya Pratama" class="font-bold w-full bg-transparent text-[11px] text-center" onclick="event.stopPropagation()">
+                    </div>
                   </div>
                   <button type="button" class="hidden group-hover:flex no-print btn-control btn-delete absolute top-1 right-1" onclick="clearSignature(event, this.parentElement)">×</button>
                 </td>
@@ -249,41 +256,44 @@
             </table>
           </div>
 
-      <!-- MAIN TABLE (Tinggi diatur otomatis secara presisi) -->
+        </div>
+      </div>
+
+      <!-- MAIN TABLE -->
       <table class="w-full text-center text-[12px] font-bold table-fixed flex-grow border-collapse mt-1">
         <!-- Row 1: Part No -->
         <tr class="bg-white">
-          <td class="w-[14%] p-1 border border-black">Part No.</td>
-          <td class="w-[28.6%] p-1 border border-black"><input type="text" value="75V030-0020" class="font-bold text-[13px]"></td>
-          <td class="w-[28.6%] p-1 border border-black"><input type="text" value="75V030-0150" class="font-bold text-[13px]"></td>
-          <td class="w-[28.6%] p-1 border border-black"><input type="text" value="75V030-0030" class="font-bold text-[13px]"></td>
+          <td class="w-[14%] p-1.5 border border-black">Part No.</td>
+          <td class="w-[28.6%] p-1.5 border border-black"><input type="text" value="75V030-0020" class="font-bold text-[13px]"></td>
+          <td class="w-[28.6%] p-1.5 border border-black"><input type="text" value="75V030-0150" class="font-bold text-[13px]"></td>
+          <td class="w-[28.6%] p-1.5 border border-black"><input type="text" value="75V030-0030" class="font-bold text-[13px]"></td>
         </tr>
         <!-- Row 2: Part Name -->
         <tr class="bg-white">
-          <td class="p-1 border border-black">Part Name</td>
-          <td class="p-1 border border-black"><input type="text" value="Knob Back" class="font-normal text-[13px]"></td>
-          <td class="p-1 border border-black"><input type="text" value="Knob LKA" class="font-normal text-[13px]"></td>
-          <td class="p-1 border border-black"><input type="text" value="Knob View" class="font-normal text-[13px]"></td>
+          <td class="p-1.5 border border-black">Part Name</td>
+          <td class="p-1.5 border border-black"><input type="text" value="Knob Back" class="font-normal text-[13px]"></td>
+          <td class="p-1.5 border border-black"><input type="text" value="Knob LKA" class="font-normal text-[13px]"></td>
+          <td class="p-1.5 border border-black"><input type="text" value="Knob View" class="font-normal text-[13px]"></td>
         </tr>
         <!-- Row 3: Model Name -->
         <tr class="bg-white">
-          <td class="p-1 border border-black">Model Name</td>
-          <td class="p-1 border border-black"><input type="text" value="D01D" class="font-normal text-[13px]"></td>
-          <td class="p-1 border border-black"><input type="text" value="D01D" class="font-normal text-[13px]"></td>
-          <td class="p-1 border border-black"><input type="text" value="D01D" class="font-normal text-[13px]"></td>
+          <td class="p-1.5 border border-black">Model Name</td>
+          <td class="p-1.5 border border-black"><input type="text" value="D01D" class="font-normal text-[13px]"></td>
+          <td class="p-1.5 border border-black"><input type="text" value="D01D" class="font-normal text-[13px]"></td>
+          <td class="p-1.5 border border-black"><input type="text" value="D01D" class="font-normal text-[13px]"></td>
         </tr>
         
         <!-- Row 4: Judge -->
         <tr class="bg-white">
-          <td class="p-1 border border-black leading-tight">Judge<br>OK / NG</td>
-          <td class="p-1 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-          <td class="p-1 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-          <td class="p-1 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+          <td class="p-1.5 border border-black leading-tight">Judge<br>OK / NG</td>
+          <td class="p-1.5 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+          <td class="p-1.5 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+          <td class="p-1.5 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
         </tr>
 
         <!-- Row 5: All FP core/pin -->
         <tr class="bg-white">
-          <td class="p-1 border border-black leading-tight">All FP<br>core/pin</td>
+          <td class="p-2 border border-black leading-tight">All FP<br>core/pin</td>
           
           <td class="border border-black photo-cell">
             <div class="photo-container" id="container-fp-1">
@@ -312,15 +322,15 @@
 
         <!-- Row 6: Judge -->
         <tr class="bg-white">
-          <td class="p-1 border border-black leading-tight">Judge<br>OK / NG</td>
-          <td class="p-1 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-          <td class="p-1 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-          <td class="p-1 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+          <td class="p-1.5 border border-black leading-tight">Judge<br>OK / NG</td>
+          <td class="p-1.5 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+          <td class="p-1.5 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+          <td class="p-1.5 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
         </tr>
 
         <!-- Row 7: All Match mark core/pin -->
         <tr class="bg-white">
-          <td class="p-1 border border-black leading-tight">All<br>Match mark<br>core/pin</td>
+          <td class="p-2 border border-black leading-tight">All<br>Match mark<br>core/pin</td>
           
           <td class="border border-black photo-cell">
             <div class="photo-container" id="container-mm-1">
@@ -349,15 +359,15 @@
 
         <!-- Row 8: Judge -->
         <tr class="bg-white">
-          <td class="p-1 border border-black leading-tight">Judge<br>OK / NG</td>
-          <td class="p-1 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-          <td class="p-1 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-          <td class="p-1 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+          <td class="p-1.5 border border-black leading-tight">Judge<br>OK / NG</td>
+          <td class="p-1.5 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+          <td class="p-1.5 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+          <td class="p-1.5 border border-black"><select class="font-bold text-[13px] cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
         </tr>
 
         <!-- Row 9: Icons -->
         <tr class="bg-white">
-          <td class="p-1 border border-black">
+          <td class="p-2 border border-black">
             <div class="flex items-center justify-center gap-1">
               <svg width="40" height="30" viewBox="0 0 40 30">
                 <polygon points="8,2 32,2 38,15 32,28 8,28 2,15" stroke="black" stroke-width="2" fill="none"/>
@@ -434,12 +444,12 @@
     });
 
     // -----------------------------------------
-    // PDF GENERATION (DENGAN SCROLLY FIX)
+    // PDF GENERATION (MENGGUNAKAN HTML2CANVAS FIXED)
     // -----------------------------------------
     async function downloadLaporanPDF() {
       const loadingOverlay = document.getElementById('loadingOverlay');
       loadingOverlay.style.display = 'flex';
-      window.scrollTo(0,0); // Mencegah terpotong akibat posisi scroll
+      window.scrollTo(0,0); 
 
       document.querySelectorAll('input[type="text"], input[type="date"], select').forEach(el => {
         el.setAttribute('value', el.value);
@@ -450,16 +460,16 @@
       
       page.classList.add('pdf-export-mode-page');
 
-      await new Promise(r => setTimeout(r, 500));
+      await new Promise(r => setTimeout(r, 500)); 
 
       try {
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('l', 'px', [1122, 793]); // Menyesuaikan persis dengan resolusi piksel
+        const pdf = new jsPDF('l', 'px', [1122, 793]); 
 
         const canvas = await html2canvas(page, { 
             scale: 2, 
             useCORS: true, 
-            windowWidth: 1122,
+            windowWidth: 1122, 
             windowHeight: 793,
             scrollY: 0 
         });
@@ -478,7 +488,7 @@
     }
 
     // -----------------------------------------
-    // PAN/ZOOM GESTURE (HANYA MENGUBAH GAMBAR INTI)
+    // PAN/ZOOM GESTURE 
     // -----------------------------------------
     function applyInteractivePanZoom(imgElement, rotBtn, wrapperElement) {
       let scale = 1; let tx = 0, ty = 0; let startX, startY;
@@ -544,7 +554,7 @@
     }
 
     // -----------------------------------------
-    // IMAGE UPLOAD (SISTEM TUNGGAL ANTI-TUMPAH)
+    // IMAGE UPLOAD 
     // -----------------------------------------
     function handleSingleImageUpload(event, containerId) {
       const file = event.target.files[0];
