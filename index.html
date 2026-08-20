@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>Match Mark FP Checksheet</title>
+  <title>Match Mark Checksheet</title>
   
   <!-- TAILWIND CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -57,9 +57,9 @@
     
     input:focus, select:focus { background-color: #fef08a !important; }
 
-    /* Pengaturan Box Foto Spesifik Tabel (Tinggi Min dikurangi agar tidak tumpah) */
+    /* Pengaturan Box Foto Spesifik Tabel */
     .img-preview-box {
-      position: relative; width: 100%; height: 100%; min-height: 60px; 
+      position: relative; width: 100%; height: 100%; 
       background-color: transparent;
       display: flex; flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 2px;
       align-items: center; justify-content: center;
@@ -75,13 +75,14 @@
     .lampiran-item img {
       position: absolute !important; top: 0; left: 0; width: 100%; height: 100%; 
       object-fit: contain; cursor: grab; transform-origin: center center;
-      -webkit-transform: translate3d(0,0,0); transform: translate3d(0,0,0);
+      transform: translate3d(0,0,0);
+      -webkit-transform: translate3d(0,0,0);
     }
     .lampiran-item img:active { cursor: grabbing; }
 
     .btn-delete {
       position: absolute; top: 2px; right: 2px; background: #ef4444; color: white;
-      border-radius: 50%; width: 22px; height: 22px; font-size: 13px; font-weight: bold;
+      border-radius: 50%; width: 20px; height: 20px; font-size: 13px; font-weight: bold;
       display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; z-index: 10;
     }
     .btn-delete:hover { background: #b91c1c; }
@@ -91,7 +92,7 @@
     th, td { border: 2px solid #000; padding: 2px; vertical-align: middle; }
     
     /* Tombol Upload di Tabel */
-    .upload-btn-container { text-align: center; margin-bottom: 4px; }
+    .upload-btn-container { text-align: center; margin-bottom: 2px; }
     .upload-btn-container label {
       cursor: pointer; background: white; color: #374151; padding: 2px 6px; 
       border-radius: 2px; font-size: 9px; font-weight: bold; border: 1px solid #9ca3af; 
@@ -137,7 +138,7 @@
   <!-- CONTROL PANEL -->
   <div class="w-[95%] max-w-[1100px] mx-auto mt-4 no-print flex justify-between items-center bg-blue-50 p-4 border border-blue-200 rounded shadow-sm">
     <div>
-      <h3 class="font-bold text-blue-800 text-sm">Match Mark FP Checksheet</h3>
+      <h3 class="font-bold text-blue-800 text-sm">Match Mark Checksheet</h3>
       <p class="text-xs text-blue-600">Klik area Tanda Tangan untuk mencoret digital, dan klik Pilih Foto untuk mengunggah gambar.</p>
     </div>
     <div class="flex gap-2">
@@ -246,6 +247,7 @@
         </div>
 
         <!-- MAIN TABLE -->
+        <!-- Menambahkan overflow-hidden di td dan flex-col agar konten tidak pernah menembus td -->
         <table class="w-full text-center text-xs font-bold table-fixed flex-grow">
           <!-- Row 1: Part No -->
           <tr class="bg-white">
@@ -277,26 +279,32 @@
             <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
           </tr>
 
-          <!-- Row 5: All FP core/pin (DIUBAH KE 120px) -->
+          <!-- Row 5: All FP core/pin (Menggunakan Flex-Col & Overflow Hidden agar presisi) -->
           <tr class="bg-white">
             <td class="p-2">All FP<br>core/pin</td>
-            <td class="p-1 relative h-[120px]">
-              <div class="upload-btn-container no-print">
-                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-1')"></label>
+            <td class="p-1 h-[130px] overflow-hidden">
+              <div class="flex flex-col h-full w-full">
+                <div class="upload-btn-container no-print shrink-0">
+                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-1')"></label>
+                </div>
+                <div id="fp-1" class="img-preview-box flex-grow min-h-0"></div>
               </div>
-              <div id="fp-1" class="img-preview-box"></div>
             </td>
-            <td class="p-1 relative h-[120px]">
-              <div class="upload-btn-container no-print">
-                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-2')"></label>
+            <td class="p-1 h-[130px] overflow-hidden">
+              <div class="flex flex-col h-full w-full">
+                <div class="upload-btn-container no-print shrink-0">
+                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-2')"></label>
+                </div>
+                <div id="fp-2" class="img-preview-box flex-grow min-h-0"></div>
               </div>
-              <div id="fp-2" class="img-preview-box"></div>
             </td>
-            <td class="p-1 relative h-[120px]">
-              <div class="upload-btn-container no-print">
-                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-3')"></label>
+            <td class="p-1 h-[130px] overflow-hidden">
+              <div class="flex flex-col h-full w-full">
+                <div class="upload-btn-container no-print shrink-0">
+                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-3')"></label>
+                </div>
+                <div id="fp-3" class="img-preview-box flex-grow min-h-0"></div>
               </div>
-              <div id="fp-3" class="img-preview-box"></div>
             </td>
           </tr>
 
@@ -308,26 +316,32 @@
             <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
           </tr>
 
-          <!-- Row 7: All Match mark core/pin (DIUBAH KE 120px) -->
+          <!-- Row 7: All Match mark core/pin -->
           <tr class="bg-white">
             <td class="p-2">All<br>Match mark<br>core/pin</td>
-            <td class="p-1 relative h-[120px]">
-              <div class="upload-btn-container no-print">
-                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-1')"></label>
+            <td class="p-1 h-[130px] overflow-hidden">
+              <div class="flex flex-col h-full w-full">
+                <div class="upload-btn-container no-print shrink-0">
+                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-1')"></label>
+                </div>
+                <div id="mm-1" class="img-preview-box flex-grow min-h-0"></div>
               </div>
-              <div id="mm-1" class="img-preview-box"></div>
             </td>
-            <td class="p-1 relative h-[120px]">
-              <div class="upload-btn-container no-print">
-                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-2')"></label>
+            <td class="p-1 h-[130px] overflow-hidden">
+              <div class="flex flex-col h-full w-full">
+                <div class="upload-btn-container no-print shrink-0">
+                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-2')"></label>
+                </div>
+                <div id="mm-2" class="img-preview-box flex-grow min-h-0"></div>
               </div>
-              <div id="mm-2" class="img-preview-box"></div>
             </td>
-            <td class="p-1 relative h-[120px]">
-              <div class="upload-btn-container no-print">
-                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-3')"></label>
+            <td class="p-1 h-[130px] overflow-hidden">
+              <div class="flex flex-col h-full w-full">
+                <div class="upload-btn-container no-print shrink-0">
+                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-3')"></label>
+                </div>
+                <div id="mm-3" class="img-preview-box flex-grow min-h-0"></div>
               </div>
-              <div id="mm-3" class="img-preview-box"></div>
             </td>
           </tr>
 
@@ -339,7 +353,7 @@
             <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
           </tr>
 
-          <!-- Row 9: Icons (DIUBAH KE 120px) -->
+          <!-- Row 9: Icons -->
           <tr class="bg-white">
             <td class="p-2">
               <div class="flex items-center justify-center gap-1">
@@ -353,23 +367,29 @@
                 </svg>
               </div>
             </td>
-            <td class="p-1 relative h-[120px]">
-              <div class="upload-btn-container no-print">
-                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-1')"></label>
+            <td class="p-1 h-[130px] overflow-hidden">
+              <div class="flex flex-col h-full w-full">
+                <div class="upload-btn-container no-print shrink-0">
+                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-1')"></label>
+                </div>
+                <div id="icon-1" class="img-preview-box flex-grow min-h-0"></div>
               </div>
-              <div id="icon-1" class="img-preview-box"></div>
             </td>
-            <td class="p-1 relative h-[120px]">
-              <div class="upload-btn-container no-print">
-                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-2')"></label>
+            <td class="p-1 h-[130px] overflow-hidden">
+              <div class="flex flex-col h-full w-full">
+                <div class="upload-btn-container no-print shrink-0">
+                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-2')"></label>
+                </div>
+                <div id="icon-2" class="img-preview-box flex-grow min-h-0"></div>
               </div>
-              <div id="icon-2" class="img-preview-box"></div>
             </td>
-            <td class="p-1 relative h-[120px]">
-              <div class="upload-btn-container no-print">
-                <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-3')"></label>
+            <td class="p-1 h-[130px] overflow-hidden">
+              <div class="flex flex-col h-full w-full">
+                <div class="upload-btn-container no-print shrink-0">
+                  <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-3')"></label>
+                </div>
+                <div id="icon-3" class="img-preview-box flex-grow min-h-0"></div>
               </div>
-              <div id="icon-3" class="img-preview-box"></div>
             </td>
           </tr>
 
@@ -477,14 +497,25 @@
     }
 
     // -----------------------------------------
-    // PAN/ZOOM GESTURE
+    // PAN/ZOOM & ROTASI GESTURE
     // -----------------------------------------
-    function applyInteractivePanZoom(imgElement) {
+    function applyInteractivePanZoom(imgElement, rotBtn) {
       let scale = 1; let tx = 0, ty = 0; let startX, startY;
       let isDragging = false; let initialPinchDist = null;
+      let angle = 0;
 
       function updateTransform() { 
-          imgElement.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${scale})`; 
+          imgElement.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${scale}) rotate(${angle}deg)`; 
+      }
+
+      // Logika tombol putar (Rotate)
+      if(rotBtn) {
+          rotBtn.onclick = function(ev) {
+              ev.stopPropagation(); 
+              ev.preventDefault();
+              angle = (angle + 90) % 360; 
+              updateTransform();
+          };
       }
 
       imgElement.addEventListener('wheel', (e) => {
@@ -548,8 +579,15 @@
           const img = document.createElement('img');
           img.src = e.target.result;
           
-          applyInteractivePanZoom(img);
+          // Tombol Rotate
+          const rotBtn = document.createElement('button');
+          rotBtn.innerHTML = '↻';
+          rotBtn.title = 'Putar Foto';
+          rotBtn.className = 'absolute top-1 left-1 bg-blue-500 hover:bg-blue-700 text-white rounded w-5 h-5 flex items-center justify-center text-[12px] font-bold no-print cursor-pointer shadow-md z-10';
           
+          applyInteractivePanZoom(img, rotBtn);
+          
+          // Tombol Delete
           const delBtn = document.createElement('button');
           delBtn.innerHTML = '×';
           delBtn.className = 'absolute top-1 right-1 bg-red-500 hover:bg-red-700 text-white rounded w-5 h-5 flex items-center justify-center text-[10px] font-bold no-print cursor-pointer shadow-md z-10';
@@ -559,6 +597,7 @@
           
           wrapper.appendChild(img);
           wrapper.appendChild(delBtn);
+          wrapper.appendChild(rotBtn);
           targetBox.appendChild(wrapper);
           updateGridLayout(targetBox); 
         }
