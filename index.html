@@ -109,10 +109,8 @@
       input::placeholder { color: transparent; }
       .upload-btn-container, .btn-delete { display: none !important; }
       
-      /* Hapus gap agar foto rapat seperti referensi */
       .img-preview-box { gap: 0 !important; padding: 0 !important; }
       .lampiran-item { border: none !important; border-radius: 0 !important; }
-      /* Sembunyikan icon kalender pada PDF */
       input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; }
     }
     
@@ -156,11 +154,11 @@
     <div class="a4-page page-container" id="page-1">
       <div class="form-border bg-white flex flex-col">
         
-        <!-- HEADER KOP (DIUBAH MENJADI FLEXBOX 3 KOLOM AGAR 100% PRESISI DAN TIDAK TABRAKAN) -->
-        <div class="flex w-full mb-3 items-stretch justify-between">
+        <!-- HEADER KOP (DIUBAH MENJADI SISTEM FLEXBOX MUTLAK) -->
+        <div class="flex w-full justify-between items-end mb-2">
           
-          <!-- Kiri: Judul dan Logo FP / Peringatan (Rata Bawah / items-end) -->
-          <div class="w-[30%] flex items-end gap-2 pb-0">
+          <!-- Kiri: Judul dan Logo FP / Peringatan -->
+          <div class="flex items-end gap-2 shrink-0 pb-0.5">
             <span class="font-bold text-xl underline underline-offset-4 tracking-wide whitespace-nowrap">Match mark on</span>
             <!-- Logo FP -->
             <svg width="40" height="30" viewBox="0 0 40 30" class="ml-1 shrink-0">
@@ -174,85 +172,89 @@
             </svg>
           </div>
 
-          <!-- Tengah: Tabel Perusahaan (Rata Atas / items-start) -->
-          <div class="w-[28%] flex justify-center items-start pt-0">
-            <table class="text-center font-bold text-[10px] w-full">
-              <tr>
-                <td class="w-1/2 p-1">会社名<br>Company Name</td>
-                <td class="w-1/2 p-1"><input type="text" value="PT. SSI" class="font-bold text-sm"></td>
-              </tr>
-              <tr>
-                <td class="p-1">部署名<br>Section Name</td>
-                <td class="p-1"><input type="text" value="Mold Maintenace" class="font-bold text-sm"></td>
-              </tr>
-            </table>
-          </div>
+          <!-- Kanan: Container 2 Tabel (Menggunakan ukuran Fixed agar tidak hancur/tabrakan) -->
+          <div class="flex items-end gap-3 shrink-0">
+            
+            <!-- Tabel Perusahaan (Tinggi presisi 80px) -->
+            <div class="w-[240px]">
+              <table class="text-center font-bold text-[10px] w-full h-[80px]">
+                <tr class="h-[40px]">
+                  <td class="w-1/2 p-1">会社名<br>Company Name</td>
+                  <td class="w-1/2 p-1"><input type="text" value="PT. SSI" class="font-bold text-sm w-full text-center bg-transparent outline-none"></td>
+                </tr>
+                <tr class="h-[40px]">
+                  <td class="p-1">部署名<br>Section Name</td>
+                  <td class="p-1"><input type="text" value="Mold Maintenace" class="font-bold text-sm w-full text-center bg-transparent outline-none"></td>
+                </tr>
+              </table>
+            </div>
 
-          <!-- Kanan: Tabel Approval (Rata Atas / items-start) -->
-          <div class="w-[40%] flex justify-end items-start pt-0">
-            <!-- Data List Combo Box untuk Nama -->
-            <datalist id="nama-approval">
-              <option value="Agus Sarjono"></option>
-              <option value="Neldy R. Ronaldy"></option>
-              <option value="Arya Pratama"></option>
-              <option value="Fajar Wicaksana"></option>
-            </datalist>
+            <!-- Tabel Approval (Tinggi presisi 80px) -->
+            <div class="w-[360px]">
+              <datalist id="nama-approval">
+                <option value="Agus Sarjono"></option>
+                <option value="Neldy R. Ronaldy"></option>
+                <option value="Arya Pratama"></option>
+                <option value="Fajar Wicaksana"></option>
+              </datalist>
 
-            <table class="text-center text-[10px] table-fixed w-full">
-              <tr class="font-bold bg-gray-50">
-                <td class="w-1/3 p-1">認可<br>Approved</td>
-                <td class="w-1/3 p-1">点検<br>Checked</td>
-                <td class="w-1/3 p-1">作成<br>Prepared</td>
-              </tr>
-              <tr class="h-[55px] relative">
-                <!-- TTD 1 -->
-                <td class="p-0 relative group align-top bg-white">
-                  <div class="flex flex-col items-center justify-center h-[35px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'app')">
-                    <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
-                    <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img" style="position:absolute; top:2px; z-index:1;">
-                  </div>
-                  <input type="text" id="name_app" list="nama-approval" value="Agus Sarjono" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center mb-1" onclick="event.stopPropagation()">
-                  <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
-                </td>
-                
-                <!-- TTD 2 -->
-                <td class="p-0 relative group align-top bg-white">
-                  <div class="flex flex-col items-center justify-center h-[35px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'chk')">
-                    <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
-                    <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img" style="position:absolute; top:2px; z-index:1;">
-                  </div>
-                  <input type="text" id="name_chk" list="nama-approval" value="Neldy R. Ronaldy" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center mb-1" onclick="event.stopPropagation()">
-                  <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
-                </td>
-                
-                <!-- TTD 3 -->
-                <td class="p-0 relative group align-top bg-white">
-                  <div class="flex flex-col items-center justify-center h-[35px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'prep')">
-                    <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
-                    <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img" style="position:absolute; top:2px; z-index:1;">
-                  </div>
-                  <input type="text" id="name_prep" list="nama-approval" value="Arya Pratama" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center mb-1" onclick="event.stopPropagation()">
-                  <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
-                </td>
-              </tr>
-              <tr>
-                <td class="p-0 bg-white">
-                  <div class="flex items-center justify-center text-[9px] px-1 gap-1">Date <input type="date" class="flex-grow cursor-pointer auto-date-field" onclick="event.stopPropagation()"></div>
-                </td>
-                <td class="p-0 bg-white">
-                  <div class="flex items-center justify-center text-[9px] px-1 gap-1">Date <input type="date" class="flex-grow cursor-pointer auto-date-field" onclick="event.stopPropagation()"></div>
-                </td>
-                <td class="p-0 bg-white">
-                  <div class="flex items-center justify-center text-[9px] px-1 gap-1">Date <input type="date" class="flex-grow cursor-pointer auto-date-field" onclick="event.stopPropagation()"></div>
-                </td>
-              </tr>
-            </table>
+              <table class="text-center text-[10px] table-fixed w-full h-[80px]">
+                <tr class="font-bold bg-gray-50 h-[20px]">
+                  <td class="w-1/3 p-0">認可<br>Approved</td>
+                  <td class="w-1/3 p-0">点検<br>Checked</td>
+                  <td class="w-1/3 p-0">作成<br>Prepared</td>
+                </tr>
+                <tr class="h-[40px] relative">
+                  <!-- TTD 1 -->
+                  <td class="p-0 relative group align-top bg-white">
+                    <div class="flex flex-col items-center justify-center h-[26px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'app')">
+                      <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
+                      <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img absolute bottom-4 z-[1]">
+                    </div>
+                    <input type="text" id="name_app" list="nama-approval" value="Agus Sarjono" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
+                    <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
+                  </td>
+                  
+                  <!-- TTD 2 -->
+                  <td class="p-0 relative group align-top bg-white">
+                    <div class="flex flex-col items-center justify-center h-[26px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'chk')">
+                      <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
+                      <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img absolute bottom-4 z-[1]">
+                    </div>
+                    <input type="text" id="name_chk" list="nama-approval" value="Neldy R. Ronaldy" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
+                    <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
+                  </td>
+                  
+                  <!-- TTD 3 -->
+                  <td class="p-0 relative group align-top bg-white">
+                    <div class="flex flex-col items-center justify-center h-[26px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'prep')">
+                      <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
+                      <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img absolute bottom-4 z-[1]">
+                    </div>
+                    <input type="text" id="name_prep" list="nama-approval" value="Arya Pratama" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
+                    <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
+                  </td>
+                </tr>
+                <tr class="h-[20px]">
+                  <td class="p-0 bg-white">
+                    <div class="flex items-center justify-center text-[9px] px-1 gap-1 h-full w-full">Date <input type="date" class="flex-grow cursor-pointer auto-date-field w-full text-center bg-transparent outline-none" onclick="event.stopPropagation()"></div>
+                  </td>
+                  <td class="p-0 bg-white">
+                    <div class="flex items-center justify-center text-[9px] px-1 gap-1 h-full w-full">Date <input type="date" class="flex-grow cursor-pointer auto-date-field w-full text-center bg-transparent outline-none" onclick="event.stopPropagation()"></div>
+                  </td>
+                  <td class="p-0 bg-white">
+                    <div class="flex items-center justify-center text-[9px] px-1 gap-1 h-full w-full">Date <input type="date" class="flex-grow cursor-pointer auto-date-field w-full text-center bg-transparent outline-none" onclick="event.stopPropagation()"></div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
           </div>
         </div>
 
         <!-- MAIN TABLE -->
         <!-- Menambahkan overflow-hidden di td dan flex-col agar konten tidak pernah menembus td -->
-        <table class="w-full text-center text-xs font-bold table-fixed flex-grow">
+        <table class="w-full text-center text-xs font-bold table-fixed flex-grow border-collapse">
           <!-- Row 1: Part No -->
           <tr class="bg-white">
             <td class="w-[12%] p-1">Part No.</td>
@@ -512,7 +514,6 @@
           imgElement.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${scale}) rotate(${angle}deg)`; 
       }
 
-      // Logika tombol putar (Rotate)
       if(rotBtn) {
           rotBtn.onclick = function(ev) {
               ev.stopPropagation(); 
@@ -583,7 +584,6 @@
           const img = document.createElement('img');
           img.src = e.target.result;
           
-          // Tombol Rotate
           const rotBtn = document.createElement('button');
           rotBtn.innerHTML = '↻';
           rotBtn.title = 'Putar Foto';
@@ -591,7 +591,6 @@
           
           applyInteractivePanZoom(img, rotBtn);
           
-          // Tombol Delete
           const delBtn = document.createElement('button');
           delBtn.innerHTML = '×';
           delBtn.className = 'absolute top-1 right-1 bg-red-500 hover:bg-red-700 text-white rounded w-5 h-5 flex items-center justify-center text-[10px] font-bold no-print cursor-pointer shadow-md z-10';
