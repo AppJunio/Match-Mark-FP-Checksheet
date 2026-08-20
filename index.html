@@ -60,24 +60,17 @@
     .img-preview-box {
       position: relative; width: 100%; height: 100%; min-height: 60px; 
       background-color: transparent;
-      display: flex; flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 4px; /* Padding dikembalikan */
+      display: flex; flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 4px; /* Menambahkan padding kembali */
       align-items: center; justify-content: center;
       overflow: hidden;
     }
     
-    /* PERBAIKAN BUG STRETCH HTML2CANVAS */
     .lampiran-item {
       position: relative; border: 1px solid #d1d5db; border-radius: 2px; overflow: hidden; 
       background: #e5e7eb; width: 100%; height: 100%; 
-      display: flex; justify-content: center; align-items: center; /* Flexbox Centering */
+      display: flex; justify-content: center; align-items: center; 
       min-height: 0 !important; min-width: 0 !important;
     }
-    
-    .lampiran-item img {
-      max-width: 100%; max-height: 100%; /* Mencegah melar */
-      object-fit: contain; cursor: grab; transform-origin: center center;
-    }
-    .lampiran-item img:active { cursor: grabbing; }
 
     .btn-delete {
       position: absolute; top: 2px; right: 2px; background: #ef4444; color: white;
@@ -173,14 +166,14 @@
             
             <!-- Tabel Perusahaan -->
             <div class="w-[240px]">
-              <table class="text-center font-bold text-[10px] w-full h-[80px]">
-                <tr class="h-[40px]">
-                  <td class="w-1/2 p-1">会社名<br>Company Name</td>
-                  <td class="w-1/2 p-1"><input type="text" value="PT. SSI" class="font-bold text-sm w-full text-center bg-transparent outline-none"></td>
+              <table class="text-center font-bold text-[10px] w-full">
+                <tr>
+                  <td class="w-1/2 p-1 border border-black">会社名<br>Company Name</td>
+                  <td class="w-1/2 p-1 border border-black"><input type="text" value="PT. SSI" class="font-bold text-sm w-full text-center bg-transparent outline-none"></td>
                 </tr>
-                <tr class="h-[40px]">
-                  <td class="p-1">部署名<br>Section Name</td>
-                  <td class="p-1"><input type="text" value="Mold Maintenace" class="font-bold text-sm w-full text-center bg-transparent outline-none"></td>
+                <tr>
+                  <td class="p-1 border border-black">部署名<br>Section Name</td>
+                  <td class="p-1 border border-black"><input type="text" value="Mold Maintenace" class="font-bold text-sm w-full text-center bg-transparent outline-none"></td>
                 </tr>
               </table>
             </div>
@@ -194,51 +187,56 @@
                 <option value="Fajar Wicaksana"></option>
               </datalist>
 
-              <table class="text-center text-[10px] table-fixed w-full h-[80px]">
-                <tr class="font-bold bg-gray-50 h-[20px]">
-                  <td class="w-1/3 p-0">認可<br>Approved</td>
-                  <td class="w-1/3 p-0">点検<br>Checked</td>
-                  <td class="w-1/3 p-0">作成<br>Prepared</td>
+              <table class="text-center text-[10px] table-fixed w-full">
+                <!-- Baris Teks (Tanpa batasan tinggi agar tidak tertimpa garis) -->
+                <tr class="font-bold bg-gray-50 border-b border-black">
+                  <td class="w-1/3 py-1">認可<br>Approved</td>
+                  <td class="w-1/3 py-1">点検<br>Checked</td>
+                  <td class="w-1/3 py-1">作成<br>Prepared</td>
                 </tr>
-                <tr class="h-[40px] relative">
+                
+                <!-- Baris TTD -->
+                <tr class="relative">
                   <!-- TTD 1 -->
-                  <td class="p-0 relative group align-top bg-white">
-                    <div class="flex flex-col items-center justify-center h-[26px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'app')">
+                  <td class="p-0 relative group align-top bg-white h-[45px]">
+                    <div class="flex flex-col items-center justify-center h-full w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'app')">
                       <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
                       <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img absolute bottom-4 z-[1]">
                     </div>
-                    <input type="text" id="name_app" list="nama-approval" value="Agus Sarjono" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
+                    <input type="text" id="name_app" list="nama-approval" value="Agus Sarjono" class="font-bold w-full absolute bottom-0 left-0 z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
                     <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
                   </td>
                   
                   <!-- TTD 2 -->
-                  <td class="p-0 relative group align-top bg-white">
-                    <div class="flex flex-col items-center justify-center h-[26px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'chk')">
+                  <td class="p-0 relative group align-top bg-white h-[45px]">
+                    <div class="flex flex-col items-center justify-center h-full w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'chk')">
                       <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
                       <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img absolute bottom-4 z-[1]">
                     </div>
-                    <input type="text" id="name_chk" list="nama-approval" value="Neldy R. Ronaldy" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
+                    <input type="text" id="name_chk" list="nama-approval" value="Neldy R. Ronaldy" class="font-bold w-full absolute bottom-0 left-0 z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
                     <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
                   </td>
                   
                   <!-- TTD 3 -->
-                  <td class="p-0 relative group align-top bg-white">
-                    <div class="flex flex-col items-center justify-center h-[26px] w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'prep')">
+                  <td class="p-0 relative group align-top bg-white h-[45px]">
+                    <div class="flex flex-col items-center justify-center h-full w-full cursor-pointer hover:bg-yellow-50" onclick="openSignatureModal(this.parentElement, 'prep')">
                       <span class="text-gray-400 text-[9px] no-print prompt-text">Klik TTD</span>
                       <img src="" class="hidden max-h-[35px] max-w-full object-contain signature-img absolute bottom-4 z-[1]">
                     </div>
-                    <input type="text" id="name_prep" list="nama-approval" value="Arya Pratama" class="font-bold w-full relative z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
+                    <input type="text" id="name_prep" list="nama-approval" value="Arya Pratama" class="font-bold w-full absolute bottom-0 left-0 z-10 bg-transparent text-[10px] text-center" onclick="event.stopPropagation()">
                     <button type="button" class="hidden group-hover:flex no-print absolute top-1 right-1 bg-red-100 text-red-600 rounded px-1 text-[8px] z-20" onclick="clearSignature(event, this.parentElement)">Hapus</button>
                   </td>
                 </tr>
-                <tr class="h-[20px]">
-                  <td class="p-0 bg-white">
+                
+                <!-- Baris Tanggal -->
+                <tr>
+                  <td class="p-0 bg-white border-t border-black">
                     <div class="flex items-center justify-center text-[9px] px-1 gap-1 h-full w-full">Date <input type="date" class="flex-grow cursor-pointer auto-date-field w-full text-center bg-transparent outline-none" onclick="event.stopPropagation()"></div>
                   </td>
-                  <td class="p-0 bg-white">
+                  <td class="p-0 bg-white border-t border-black">
                     <div class="flex items-center justify-center text-[9px] px-1 gap-1 h-full w-full">Date <input type="date" class="flex-grow cursor-pointer auto-date-field w-full text-center bg-transparent outline-none" onclick="event.stopPropagation()"></div>
                   </td>
-                  <td class="p-0 bg-white">
+                  <td class="p-0 bg-white border-t border-black">
                     <div class="flex items-center justify-center text-[9px] px-1 gap-1 h-full w-full">Date <input type="date" class="flex-grow cursor-pointer auto-date-field w-full text-center bg-transparent outline-none" onclick="event.stopPropagation()"></div>
                   </td>
                 </tr>
@@ -252,38 +250,38 @@
         <table class="w-full text-center text-xs font-bold table-fixed flex-grow border-collapse">
           <!-- Row 1: Part No -->
           <tr class="bg-white">
-            <td class="w-[12%] p-1">Part No.</td>
-            <td class="w-[29.3%] p-1"><input type="text" value="75V030-0020" class="font-bold text-sm"></td>
-            <td class="w-[29.3%] p-1"><input type="text" value="75V030-0150" class="font-bold text-sm"></td>
-            <td class="w-[29.3%] p-1"><input type="text" value="75V030-0030" class="font-bold text-sm"></td>
+            <td class="w-[12%] p-1 border border-black">Part No.</td>
+            <td class="w-[29.3%] p-1 border border-black"><input type="text" value="75V030-0020" class="font-bold text-sm"></td>
+            <td class="w-[29.3%] p-1 border border-black"><input type="text" value="75V030-0150" class="font-bold text-sm"></td>
+            <td class="w-[29.3%] p-1 border border-black"><input type="text" value="75V030-0030" class="font-bold text-sm"></td>
           </tr>
           <!-- Row 2: Part Name -->
           <tr class="bg-white">
-            <td class="p-1">Part Name</td>
-            <td class="p-1"><input type="text" value="Knob Back" class="font-normal text-sm"></td>
-            <td class="p-1"><input type="text" value="Knob LKA" class="font-normal text-sm"></td>
-            <td class="p-1"><input type="text" value="Knob View" class="font-normal text-sm"></td>
+            <td class="p-1 border border-black">Part Name</td>
+            <td class="p-1 border border-black"><input type="text" value="Knob Back" class="font-normal text-sm"></td>
+            <td class="p-1 border border-black"><input type="text" value="Knob LKA" class="font-normal text-sm"></td>
+            <td class="p-1 border border-black"><input type="text" value="Knob View" class="font-normal text-sm"></td>
           </tr>
           <!-- Row 3: Model Name -->
           <tr class="bg-white">
-            <td class="p-1">Model Name</td>
-            <td class="p-1"><input type="text" value="D01D" class="font-normal text-sm"></td>
-            <td class="p-1"><input type="text" value="D01D" class="font-normal text-sm"></td>
-            <td class="p-1"><input type="text" value="D01D" class="font-normal text-sm"></td>
+            <td class="p-1 border border-black">Model Name</td>
+            <td class="p-1 border border-black"><input type="text" value="D01D" class="font-normal text-sm"></td>
+            <td class="p-1 border border-black"><input type="text" value="D01D" class="font-normal text-sm"></td>
+            <td class="p-1 border border-black"><input type="text" value="D01D" class="font-normal text-sm"></td>
           </tr>
           
           <!-- Row 4: Judge -->
           <tr class="bg-white">
-            <td class="p-1">Judge<br>OK / NG</td>
-            <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-            <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-            <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+            <td class="p-1 border border-black">Judge<br>OK / NG</td>
+            <td class="p-1 border border-black"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+            <td class="p-1 border border-black"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+            <td class="p-1 border border-black"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
           </tr>
 
           <!-- Row 5: All FP core/pin -->
           <tr class="bg-white">
-            <td class="p-2">All FP<br>core/pin</td>
-            <td class="p-1 h-[130px] overflow-hidden">
+            <td class="p-2 border border-black">All FP<br>core/pin</td>
+            <td class="p-1 h-[130px] overflow-hidden border border-black">
               <div class="flex flex-col h-full w-full">
                 <div class="upload-btn-container no-print shrink-0">
                   <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-1')"></label>
@@ -291,7 +289,7 @@
                 <div id="fp-1" class="img-preview-box flex-grow min-h-0"></div>
               </div>
             </td>
-            <td class="p-1 h-[130px] overflow-hidden">
+            <td class="p-1 h-[130px] overflow-hidden border border-black">
               <div class="flex flex-col h-full w-full">
                 <div class="upload-btn-container no-print shrink-0">
                   <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-2')"></label>
@@ -299,7 +297,7 @@
                 <div id="fp-2" class="img-preview-box flex-grow min-h-0"></div>
               </div>
             </td>
-            <td class="p-1 h-[130px] overflow-hidden">
+            <td class="p-1 h-[130px] overflow-hidden border border-black">
               <div class="flex flex-col h-full w-full">
                 <div class="upload-btn-container no-print shrink-0">
                   <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'fp-3')"></label>
@@ -311,16 +309,16 @@
 
           <!-- Row 6: Judge -->
           <tr class="bg-white">
-            <td class="p-1">Judge<br>OK / NG</td>
-            <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-            <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-            <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+            <td class="p-1 border border-black">Judge<br>OK / NG</td>
+            <td class="p-1 border border-black"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+            <td class="p-1 border border-black"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+            <td class="p-1 border border-black"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
           </tr>
 
           <!-- Row 7: All Match mark core/pin -->
           <tr class="bg-white">
-            <td class="p-2">All<br>Match mark<br>core/pin</td>
-            <td class="p-1 h-[130px] overflow-hidden">
+            <td class="p-2 border border-black">All<br>Match mark<br>core/pin</td>
+            <td class="p-1 h-[130px] overflow-hidden border border-black">
               <div class="flex flex-col h-full w-full">
                 <div class="upload-btn-container no-print shrink-0">
                   <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-1')"></label>
@@ -328,7 +326,7 @@
                 <div id="mm-1" class="img-preview-box flex-grow min-h-0"></div>
               </div>
             </td>
-            <td class="p-1 h-[130px] overflow-hidden">
+            <td class="p-1 h-[130px] overflow-hidden border border-black">
               <div class="flex flex-col h-full w-full">
                 <div class="upload-btn-container no-print shrink-0">
                   <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-2')"></label>
@@ -336,7 +334,7 @@
                 <div id="mm-2" class="img-preview-box flex-grow min-h-0"></div>
               </div>
             </td>
-            <td class="p-1 h-[130px] overflow-hidden">
+            <td class="p-1 h-[130px] overflow-hidden border border-black">
               <div class="flex flex-col h-full w-full">
                 <div class="upload-btn-container no-print shrink-0">
                   <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'mm-3')"></label>
@@ -348,15 +346,15 @@
 
           <!-- Row 8: Judge -->
           <tr class="bg-white">
-            <td class="p-1">Judge<br>OK / NG</td>
-            <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-            <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
-            <td class="p-1"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+            <td class="p-1 border border-black">Judge<br>OK / NG</td>
+            <td class="p-1 border border-black"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+            <td class="p-1 border border-black"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
+            <td class="p-1 border border-black"><select class="font-bold text-sm cursor-pointer"><option>OK</option><option>NG</option><option>-</option></select></td>
           </tr>
 
           <!-- Row 9: Icons -->
           <tr class="bg-white">
-            <td class="p-2">
+            <td class="p-2 border border-black">
               <div class="flex items-center justify-center gap-1">
                 <svg width="35" height="25" viewBox="0 0 40 30">
                   <polygon points="8,2 32,2 38,15 32,28 8,28 2,15" stroke="black" stroke-width="2" fill="none"/>
@@ -368,7 +366,7 @@
                 </svg>
               </div>
             </td>
-            <td class="p-1 h-[130px] overflow-hidden">
+            <td class="p-1 h-[130px] overflow-hidden border border-black">
               <div class="flex flex-col h-full w-full">
                 <div class="upload-btn-container no-print shrink-0">
                   <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-1')"></label>
@@ -376,7 +374,7 @@
                 <div id="icon-1" class="img-preview-box flex-grow min-h-0"></div>
               </div>
             </td>
-            <td class="p-1 h-[130px] overflow-hidden">
+            <td class="p-1 h-[130px] overflow-hidden border border-black">
               <div class="flex flex-col h-full w-full">
                 <div class="upload-btn-container no-print shrink-0">
                   <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-2')"></label>
@@ -384,7 +382,7 @@
                 <div id="icon-2" class="img-preview-box flex-grow min-h-0"></div>
               </div>
             </td>
-            <td class="p-1 h-[130px] overflow-hidden">
+            <td class="p-1 h-[130px] overflow-hidden border border-black">
               <div class="flex flex-col h-full w-full">
                 <div class="upload-btn-container no-print shrink-0">
                   <label>📷 Tambah Foto<input type="file" multiple accept="image/*" class="hidden" onchange="handleMultipleImagesForBox(event, 'icon-3')"></label>
@@ -452,7 +450,7 @@
     setTimeout(applyMobileScale, 100); 
 
     // -----------------------------------------
-    // PDF GENERATION
+    // PDF GENERATION (DENGAN SCROLLY FIX)
     // -----------------------------------------
     async function downloadLaporanPDF() {
       const loadingOverlay = document.getElementById('loadingOverlay');
@@ -480,7 +478,13 @@
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        const canvas1 = await html2canvas(pages[0], { scale: 2, useCORS: true, windowWidth: 1122 });
+        // scrollY: 0 atau -window.scrollY berfungsi mencegah gambar bergeser saat html2canvas mencetak
+        const canvas1 = await html2canvas(pages[0], { 
+            scale: 2, 
+            useCORS: true, 
+            windowWidth: 1122,
+            scrollY: -window.scrollY 
+        });
         const imgData1 = canvas1.toDataURL('image/jpeg', 0.95);
         pdf.addImage(imgData1, 'JPEG', 0, 0, pdfWidth, pdfHeight);
 
@@ -498,15 +502,16 @@
     }
 
     // -----------------------------------------
-    // PAN/ZOOM & ROTASI GESTURE
+    // PAN/ZOOM & ROTASI GESTURE (MENGGUNAKAN 2D TRANSLATE AGAR HTML2CANVAS BISA MEMBACA)
     // -----------------------------------------
-    function applyInteractivePanZoom(imgElement, rotBtn) {
+    function applyInteractivePanZoom(wrapperElement, rotBtn) {
       let scale = 1; let tx = 0, ty = 0; let startX, startY;
       let isDragging = false; let initialPinchDist = null;
       let angle = 0;
 
       function updateTransform() { 
-          imgElement.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${scale}) rotate(${angle}deg)`; 
+          // Translate 2D lebih aman untuk html2canvas dibanding translate3d
+          wrapperElement.style.transform = `translate(${tx}px, ${ty}px) scale(${scale}) rotate(${angle}deg)`; 
       }
 
       if(rotBtn) {
@@ -518,14 +523,14 @@
           };
       }
 
-      imgElement.addEventListener('wheel', (e) => {
+      wrapperElement.addEventListener('wheel', (e) => {
         e.preventDefault(); 
         const delta = e.deltaY * -0.003;
         scale = Math.min(Math.max(1, scale + delta), 8);
         updateTransform();
       }, { passive: false });
 
-      imgElement.addEventListener('mousedown', (e) => {
+      wrapperElement.addEventListener('mousedown', (e) => {
         e.preventDefault(); isDragging = true;
         startX = e.clientX - tx; startY = e.clientY - ty;
       });
@@ -535,7 +540,7 @@
       });
       window.addEventListener('mouseup', () => { isDragging = false; });
 
-      imgElement.addEventListener('touchstart', (e) => {
+      wrapperElement.addEventListener('touchstart', (e) => {
         e.preventDefault(); 
         if (e.touches.length === 2) {
           initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
@@ -544,7 +549,7 @@
         }
       }, { passive: false });
 
-      imgElement.addEventListener('touchmove', (e) => {
+      wrapperElement.addEventListener('touchmove', (e) => {
         e.preventDefault(); 
         if (e.touches.length === 2 && initialPinchDist) {
           const currentDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
@@ -556,14 +561,14 @@
         }
       }, { passive: false });
 
-      imgElement.addEventListener('touchend', (e) => {
+      wrapperElement.addEventListener('touchend', (e) => {
         if (e.touches.length < 2) initialPinchDist = null;
         if (e.touches.length === 0) isDragging = false;
       });
     }
 
     // -----------------------------------------
-    // IMAGE UPLOAD & MULTI-GRID LAYOUT
+    // IMAGE UPLOAD & MULTI-GRID LAYOUT (DENGAN PEMBUNGKUS UNTUK FIX HTML2CANVAS)
     // -----------------------------------------
     function handleMultipleImagesForBox(event, targetId) {
       const files = event.target.files;
@@ -573,18 +578,30 @@
       Array.from(files).forEach(file => {
         const reader = new FileReader();
         reader.onload = function(e) {
+          // Container Paling Luar (Menahan Overflow)
           const wrapper = document.createElement('div');
           wrapper.className = 'lampiran-item';
           
+          // Container Pembawa Transform (Agar html2canvas membaca skala dengan benar)
+          const imgContainer = document.createElement('div');
+          imgContainer.style.width = '100%';
+          imgContainer.style.height = '100%';
+          imgContainer.style.display = 'flex';
+          imgContainer.style.justifyContent = 'center';
+          imgContainer.style.alignItems = 'center';
+          imgContainer.style.transformOrigin = 'center center';
+          
           const img = document.createElement('img');
           img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '100%';
+          img.style.objectFit = 'contain';
+          img.style.pointerEvents = 'none'; // Biarkan imgContainer yang merespons drag/sentuhan
           
           const rotBtn = document.createElement('button');
           rotBtn.innerHTML = '↻';
           rotBtn.title = 'Putar Foto';
           rotBtn.className = 'absolute top-1 left-1 bg-blue-500 hover:bg-blue-700 text-white rounded w-5 h-5 flex items-center justify-center text-[12px] font-bold no-print cursor-pointer shadow-md z-10';
-          
-          applyInteractivePanZoom(img, rotBtn);
           
           const delBtn = document.createElement('button');
           delBtn.innerHTML = '×';
@@ -593,10 +610,14 @@
             ev.stopPropagation(); wrapper.remove(); updateGridLayout(targetBox); 
           };
           
-          wrapper.appendChild(img);
+          imgContainer.appendChild(img);
+          wrapper.appendChild(imgContainer);
           wrapper.appendChild(delBtn);
           wrapper.appendChild(rotBtn);
           targetBox.appendChild(wrapper);
+          
+          // Apply logika pan/zoom ke inner container (imgContainer) bukan ke img secara langsung
+          applyInteractivePanZoom(imgContainer, rotBtn);
           updateGridLayout(targetBox); 
         }
         reader.readAsDataURL(file);
@@ -627,7 +648,7 @@
     }
 
     // -----------------------------------------
-    // CANVAS SIGNATURE FIX
+    // CANVAS SIGNATURE
     // -----------------------------------------
     const modal = document.getElementById('signatureModal');
     const canvas = document.getElementById('signatureCanvas');
